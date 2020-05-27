@@ -9,21 +9,22 @@ beforeEach(async () => {
 afterEach(async () => {
   await page.close();
 });
+describe("Test for header component", () => {
+  test("the header has the correct test", async () => {
+    const text = await page.getContentsOf("a.brand-logo");
+    expect(text).toEqual("Blogster");
+  });
 
-test("the header has the correct test", async () => {
-  const text = await page.getContentsOf("a.brand-logo");
-  expect(text).toEqual("Blogster");
-});
+  test("clicking login starts oauth flow", async () => {
+    await page.click(".right a");
 
-test("clicking login starts oauth flow", async () => {
-  await page.click(".right a");
+    const url = await page.url();
+    expect(url).toMatch(/accounts\.google\.com/);
+  });
 
-  const url = await page.url();
-  expect(url).toMatch(/accounts\.google\.com/);
-});
-
-test("When signed in, shows logout button", async () => {
-  await page.login();
-  const logout = await page.getContentsOf('a[href="/auth/logout"]');
-  expect(logout).toEqual("Logout");
+  test("When signed in, shows logout button", async () => {
+    await page.login();
+    const logout = await page.getContentsOf('a[href="/auth/logout"]');
+    expect(logout).toEqual("Logout");
+  });
 });
